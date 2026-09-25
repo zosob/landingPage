@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Fortify — Scam Protection for Seniors, by ElderConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0B0F19;
+      --surface: rgba(255, 255, 255, 0.07);
+      --surface-border: rgba(255, 255, 255, 0.22);
+      --nav-bg: rgba(11, 15, 25, 0.92);
+      --text: #FFFFFF;
+      --text-muted: #D1D5DB; /* AAA compliant contrast (~10:1 on dark bg) */
+      --accent: #2563EB;
+      --accent-light: #60A5FA;
+      --accent-glow: rgba(37, 99, 235, 0.5);
+      --alert-red: #EF4444;
+      --alert-red-bg: rgba(239, 68, 68, 0.2);
+      --safe-green: #10B981;
+      --safe-green-bg: rgba(16, 185, 129, 0.2);
+      --base-font-size: 18px; /* Senior readable base font size */
+      --focus-ring: #60A5FA;
+    }
+
+    body.light-theme {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface-border: #94A3B8;
+      --nav-bg: rgba(248, 250, 252, 0.95);
+      --text: #0F172A;
+      --text-muted: #334155; /* AAA contrast on light bg */
+      --accent: #1D4ED8;
+      --accent-light: #1E40AF;
+      --accent-glow: rgba(29, 78, 216, 0.25);
+      --alert-red: #DC2626;
+      --alert-red-bg: #FEE2E2;
+      --safe-green: #047857;
+      --safe-green-bg: #D1FAE5;
+      --focus-ring: #1D4ED8;
+    }
+
+    body.high-contrast {
+      --bg: #000000;
+      --surface: #121212;
+      --surface-border: #FFFFFF;
+      --nav-bg: #000000;
+      --text: #FFFFFF;
+      --text-muted: #F3F4F6;
+      --accent: #38BDF8;
+      --accent-light: #7DD3FC;
+      --accent-glow: rgba(56, 189, 248, 0.6);
+      --alert-red: #FF453A;
+      --safe-green: #30D158;
+      --focus-ring: #FFD700;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: var(--base-font-size); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Universal Focus Ring for Accessibility */
+    *:focus-visible {
+      outline: 3px solid var(--focus-ring) !important;
+      outline-offset: 3px !important;
+      border-radius: 4px;
+    }
+
+    /* Skip to content for Screen Readers */
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 16px;
+      background: var(--accent);
+      color: #FFFFFF;
+      padding: 12px 20px;
+      z-index: 9999;
+      font-weight: 700;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: top 0.2s ease;
+    }
+    .skip-link:focus {
+      top: 16px;
+    }
+
+    /* Navigation Bar */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 12px 16px;
+    }
+    .nav-container {
+      width: 100%;
+      max-width: 1120px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid var(--surface-border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 4px 8px;
+    }
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .brand-sub {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      display: block;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 10px 12px;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--accent-light);
+      background: var(--surface);
+    }
+
+    /* Buttons with Minimum Senior Touch Target (48px+) */
+    .btn {
+      font-size: 1rem;
+      font-weight: 700;
+      min-height: 48px;
+      min-width: 48px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+    .btn-outline {
+      background: transparent;
+      border-color: var(--surface-border);
+      color: var(--text);
+    }
+    .btn-outline:hover {
+      border-color: var(--text);
+      background: var(--surface);
+    }
+    .btn-donate {
+      border-color: #F472B6;
+      background: rgba(244, 114, 182, 0.15);
+      color: #F472B6;
+    }
+    body.light-theme .btn-donate {
+      border-color: #DB2777;
+      background: #FCE7F3;
+      color: #9D174D;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #FFFFFF;
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 140px 20px 70px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .dot-green {
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: var(--safe-green);
+      flex-shrink: 0;
+    }
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      max-width: 16em;
+      color: var(--text);
+    }
+    .hero-subtitle {
+      margin-top: 20px;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 32em;
+    }
+    .hero-subtitle span {
+      color: var(--text);
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-underline-offset: 4px;
+    }
+    .hero-btns {
+      margin-top: 32px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Continuous Scroll Section */
+    .scroll-story-section {
+      position: relative;
+      width: 100%;
+      height: 400vh;
+    }
+    .sticky-viewport {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .story-container {
+      width: 100%;
+      max-width: 1120px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      gap: 60px;
+    }
+
+    /* Phone Mockup Frame */
+    .phone-mockup {
+      width: 310px;
+      height: 560px;
+      border-radius: 44px;
+      background: #000000;
+      border: 8px solid #27272A;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 0 2px var(--surface-border);
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    body.light-theme .phone-mockup {
+      background: #FFFFFF;
+      border-color: #3F3F46;
+    }
+    .phone-notch {
+      position: absolute;
+      top: 10px; left: 50%;
+      transform: translateX(-50%);
+      width: 100px; height: 22px;
+      background: #27272A;
+      border-radius: 999px;
+      z-index: 10;
+    }
+    .phone-screen {
+      width: 100%; height: 100%;
+      padding: 44px 16px 20px 16px;
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-screen.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* SMS elements inside frame */
+    .sms-box {
+      background: #18181B;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #F4F4F5;
+      border-left: 4px solid #F59E0B;
+      margin-top: 28px;
+    }
+    .sms-header {
+      font-weight: 800;
+      color: #F59E0B;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    .screenshot-flash {
+      position: absolute;
+      inset: 0;
+      background: #FFFFFF;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 20;
+    }
+    .flash-anim { animation: flashPulse 0.45s ease-out; }
+    @keyframes flashPulse { 0% { opacity: 0.95; } 100% { opacity: 0; } }
+
+    .screenshot-thumb {
+      position: absolute;
+      bottom: 20px; left: 20px;
+      width: 65px; height: 110px;
+      background: #18181B;
+      border: 3px solid #FFFFFF;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.8);
+      transform: scale(0);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 15;
+      padding: 6px;
+      overflow: hidden;
+    }
+    .phone-screen.active .screenshot-thumb { transform: scale(1); }
+
+    .gesture-hint {
+      margin: auto;
+      text-align: center;
+      background: rgba(255,255,255,0.12);
+      border: 2px dashed var(--surface-border);
+      padding: 20px 16px;
+      border-radius: 20px;
+      color: var(--text);
+    }
+    .scan-beam {
+      position: absolute;
+      left: 0; right: 0;
+      height: 4px;
+      background: #38BDF8;
+      box-shadow: 0 0 20px #38BDF8, 0 0 40px #38BDF8;
+      animation: scanMove 2s infinite ease-in-out;
+    }
+    @keyframes scanMove { 0% { top: 20%; } 50% { top: 80%; } 100% { top: 20%; } }
+
+    .verdict-card {
+      background: var(--alert-red-bg);
+      border: 2px solid var(--alert-red);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .verdict-score {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--alert-red);
+      font-family: 'Outfit', sans-serif;
+    }
+    .verdict-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--alert-red);
+    }
+
+    /* Text Block Side */
+    .story-text-container {
+      flex: 1;
+      max-width: 500px;
+      position: relative;
+      height: 320px;
+      display: flex;
+      align-items: center;
+    }
+    .story-step-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+    .story-step-text.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .step-tag {
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+    }
+    .step-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .step-desc {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    /* General Sections */
+    .section-padding { padding: 90px 20px; }
+    .section-title { text-align: center; margin-bottom: 48px; }
+    .section-title h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text);
+    }
+    .section-title p {
+      color: var(--text-muted);
+      margin-top: 10px;
+      font-size: 1.15rem;
+      max-width: 34em;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Live Demo Section */
+    .demo-grid {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .demo-sample-card {
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      padding: 18px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-bottom: 14px;
+      min-height: 64px;
+      transition: all 0.2s ease;
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+    .demo-sample-card:hover {
+      border-color: var(--accent-light);
+      background: rgba(37, 99, 235, 0.1);
+    }
+    .demo-sample-card.active {
+      border-color: var(--accent);
+      background: rgba(37, 99, 235, 0.18);
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+    .demo-sample-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .demo-sample-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .demo-result-box {
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      border-radius: 24px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    /* Caregiver Section */
+    .caregiver-container {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+    .caregiver-card {
+      flex: 1;
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      border-radius: 24px;
+      padding: 28px 24px;
+      width: 100%;
+    }
+
+    /* Mission */
+    .mission-section {
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, var(--surface) 50%, rgba(0,0,0,0) 100%);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      padding: 24px 16px;
+      border-radius: 20px;
+      text-align: center;
+    }
+    .stat-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent-light);
+    }
+    .stat-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .donation-box {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      padding: 28px 22px;
+      border-radius: 24px;
+      text-align: center;
+    }
+    .donate-amounts {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .donate-chip {
+      flex: 1;
+      padding: 14px 0;
+      min-height: 52px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid var(--surface-border);
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .donate-chip.active {
+      background: rgba(244, 114, 182, 0.2);
+      border-color: #F472B6;
+      color: #F472B6;
+    }
+    body.light-theme .donate-chip.active {
+      background: #FCE7F3;
+      border-color: #DB2777;
+      color: #9D174D;
+    }
+
+    /* Waitlist */
+    .waitlist-card {
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      padding: 36px 28px;
+      border-radius: 26px;
+      text-align: center;
+    }
+    .role-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 22px 0;
+    }
+    .role-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      min-height: 54px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid var(--surface-border);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-align: left;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
+    .role-btn.active {
+      border-color: var(--accent);
+      background: rgba(37, 99, 235, 0.18);
+    }
+    .role-dot {
+      width: 18px; height: 18px;
+      border-radius: 999px;
+      border: 3px solid var(--text-muted);
+      flex-shrink: 0;
+    }
+    .role-btn.active .role-dot {
+      border-color: var(--accent-light);
+      background: var(--accent);
+    }
+
+    .email-label {
+      display: block;
+      text-align: left;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .email-input {
+      width: 100%;
+      height: 54px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid var(--surface-border);
+      color: var(--text);
+      font-size: 1.05rem;
+      outline: none;
+      margin-bottom: 16px;
+    }
+    body.light-theme .email-input {
+      background: #FFFFFF;
+      color: #0F172A;
+    }
+
+    /* Accessibility Toolbar Floating Bar */
+    .acc-bar {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid var(--surface-border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .acc-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 2px solid var(--surface-border);
+      min-height: 44px;
+      min-width: 44px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .acc-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    /* Visually hidden accessibility status announcements */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Reduced Motion Accessibility Settings */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+      .scroll-story-section {
+        height: auto;
+      }
+      .sticky-viewport {
+        position: relative;
+        height: auto;
+        padding: 40px 0;
+      }
+      .scan-beam { display: none; }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 820px) {
+      .nav-links { display: none !important; }
+
+      .story-container {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 80px 20px 80px 20px;
+        gap: 20px;
+        height: 100%;
+      }
+
+      .phone-mockup {
+        width: 240px;
+        height: 420px;
+        border-width: 6px;
+        border-radius: 36px;
+      }
+      .phone-notch { width: 80px; height: 16px; top: 6px; }
+      .phone-screen { padding: 30px 12px 12px 12px; }
+      .sms-box { margin-top: 14px; font-size: 0.8rem; padding: 12px; }
+
+      .story-text-container {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: 160px;
+        align-items: center;
+        justify-content: center;
+      }
+      .story-step-text {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        text-align: center;
+        opacity: 0;
+        display: none;
+      }
+      .story-step-text.active {
+        display: flex;
+        opacity: 1;
+      }
+
+      .demo-grid, .caregiver-container, .stats-grid {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip to main content link for screen reader / keyboard accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Live ARIA status region for announcements -->
+  <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Navigation -->
+  <header role="banner">
+    <div class="nav-container">
+      <a href="#" class="brand" aria-label="Fortify by ElderConnect Homepage">
+        <svg width="24" height="28" viewBox="0 0 26 30" fill="none" aria-hidden="true" focusable="false">
+          <path d="M13 1L24 5.5V13.5C24 20.5 19.4 25.9 13 29C6.6 25.9 2 20.5 2 13.5V5.5L13 1Z" fill="#2563EB" fill-opacity="0.25" stroke="#2563EB" stroke-width="2.5"/>
+          <path d="M8.5 14.7L11.6 17.8L17.8 11" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <span class="brand-title">Fortify</span>
+          <span class="brand-sub">BY ELDERCONNECT</span>
+        </div>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#demo">Live Demo</a>
+        <a href="#caregiver">Caregivers</a>
+        <a href="#mission">Mission</a>
+      </nav>
+      <div>
+        <a href="#waitlist" class="btn btn-primary">Join Waitlist</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="badge">
+        <span class="dot-green" aria-hidden="true"></span>
+        Early Access Applications Open
+      </div>
+      <h1 id="hero-heading" class="hero-title">Protection your family can feel good about.</h1>
+      <p class="hero-subtitle">Fortify gives seniors an instant answer to <span>"Is this text a scam?"</span> — with zero tech friction.</p>
+      <div class="hero-btns">
+        <a href="#waitlist" class="btn btn-primary" style="width: 100%; max-width: 240px;">Join the Waitlist</a>
+        <a href="#demo" class="btn btn-outline" style="width: 100%; max-width: 220px;">Try Live Demo</a>
+      </div>
+    </section>
+
+    <!-- CONTINUOUS STICKY SCROLL STORYTELLING SECTION -->
+    <section class="scroll-story-section" id="how-it-works" aria-label="How Fortify Works step-by-step guide">
+      <div class="sticky-viewport">
+        <div class="story-container">
+
+          <!-- Sticky Phone Frame -->
+          <div class="phone-mockup" aria-hidden="true">
+            <div class="phone-notch"></div>
+            <div class="screenshot-flash" id="flash-overlay"></div>
+
+            <!-- Screen 1 -->
+            <div class="phone-screen active" id="screen-1">
+              <div style="font-size: 0.75rem; color: #A1A1AA; text-align: center;">Messages • 2:14 PM</div>
+              <div class="sms-box">
+                <div class="sms-header">⚠️ Unknown Sender</div>
+                URGENT: Your Chase bank account is locked due to suspicious activity. Click: bit.ly/fake-bank-login
+              </div>
+            </div>
+
+            <!-- Screen 2 -->
+            <div class="phone-screen" id="screen-2">
+              <div class="gesture-hint">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" aria-hidden="true">
+                  <rect x="5" y="2" width="14" height="20" rx="3"></rect>
+                  <circle cx="12" cy="18" r="1"></circle>
+                </svg>
+                <div style="margin-top: 8px; font-weight: 800; font-size: 0.95rem;">Take Screenshot</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Power + Volume Up</div>
+              </div>
+              <div class="screenshot-thumb">
+                <div style="width: 100%; height: 100%; background: rgba(245, 158, 11, 0.25); border-radius: 6px; border-left: 3px solid #F59E0B;"></div>
+              </div>
+            </div>
+
+            <!-- Screen 3 -->
+            <div class="phone-screen" id="screen-3" style="justify-content: center; align-items: center;">
+              <div class="scan-beam"></div>
+              <svg width="48" height="48" viewBox="0 0 26 30" fill="none" aria-hidden="true">
+                <path d="M13 1L24 5.5V13.5C24 20.5 19.4 25.9 13 29C6.6 25.9 2 20.5 2 13.5V5.5L13 1Z" fill="#2563EB" fill-opacity="0.3" stroke="#2563EB" stroke-width="2.5"/>
+              </svg>
+              <div style="margin-top: 10px; font-size: 0.85rem; font-weight: 800; color: #38BDF8;">Analyzing...</div>
+            </div>
+
+            <!-- Screen 4 -->
+            <div class="phone-screen" id="screen-4">
+              <div class="verdict-card">
+                <div class="verdict-label">RISK VERDICT</div>
+                <div class="verdict-score">98%</div>
+                <div style="font-size: 0.85rem; font-weight: 800; color: var(--alert-red);">HIGH RISK SCAM</div>
+              </div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; line-height: 1.4;">
+                Phishing link detected impersonating Chase Bank.
+              </div>
+              <button class="btn btn-primary" style="margin-top: auto; background: var(--alert-red); width: 100%; font-size: 0.85rem; padding: 10px;" tabindex="-1">Block Sender</button>
+            </div>
+
+          </div>
+
+          <!-- Scroll-linked Text Blocks -->
+          <div class="story-text-container" id="story-text-container" aria-live="polite">
+
+            <div class="story-step-text active" id="text-1">
+              <div class="step-tag">STEP 01 — THE THREAT</div>
+              <h2 class="step-title">Scams happen in seconds.</h2>
+              <p class="step-desc">Fraudulent text messages impersonate banks and loved ones using high-urgency language.</p>
+            </div>
+
+            <div class="story-step-text" id="text-2">
+              <div class="step-tag">STEP 02 — THE ACTION</div>
+              <h2 class="step-title">No tech skills needed. Just screenshot.</h2>
+              <p class="step-desc">Seniors don't need to copy links or fill out forms. A simple screenshot triggers instant protection.</p>
+            </div>
+
+            <div class="story-step-text" id="text-3">
+              <div class="step-tag">STEP 03 — THE ANALYSIS</div>
+              <h2 class="step-title">Instant AI Security Scan.</h2>
+              <p class="step-desc">Fortify's AI engine instantly cross-references phone numbers, domain registries, and scam pattern databases.</p>
+            </div>
+
+            <div class="story-step-text" id="text-4">
+              <div class="step-tag">STEP 04 — THE RESULT</div>
+              <h2 class="step-title">Total clarity & peace of mind.</h2>
+              <p class="step-desc">Get an unquestionable risk score with plain-language advice and one-tap actions to block threats.</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section class="section-padding" id="demo" aria-labelledby="demo-heading">
+      <div class="section-title">
+        <h2 id="demo-heading">Try Fortify Live</h2>
+        <p>Select sample messages below to see how the AI risk scoring engine works in real time.</p>
+      </div>
+      <div class="demo-grid">
+        <div role="region" aria-label="Sample message options">
+          <button class="demo-sample-card active" id="demo-btn-1" onclick="setDemo(98, 'HIGH RISK SCAM', 'var(--alert-red)', 'Fake IRS arrest threat demanding immediate payment via gift cards.', this)" onkeydown="handleKeyClick(event)" aria-pressed="true">
+            <span class="demo-sample-title" style="color: var(--alert-red);">
+              <span aria-hidden="true">⚠️</span> IRS Tax Penalty Text
+            </span>
+            <span class="demo-sample-text">"IRS Alert: You owe $1,420 in back taxes. Pay immediately via gift card."</span>
+          </button>
+
+          <button class="demo-sample-card" id="demo-btn-2" onclick="setDemo(94, 'HIGH RISK SCAM', 'var(--alert-red)', 'Grandchild emergency scam requesting urgent wire transfer.', this)" onkeydown="handleKeyClick(event)" aria-pressed="false">
+            <span class="demo-sample-title" style="color: var(--alert-red);">
+              <span aria-hidden="true">🚨</span> Emergency Grandchild Text
+            </span>
+            <span class="demo-sample-text">"Grandma it's me! I got into an accident and need bail money wired."</span>
+          </button>
+
+          <button class="demo-sample-card" id="demo-btn-3" onclick="setDemo(2, 'SAFE MESSAGE', 'var(--safe-green)', 'Verified postal tracking update without payment requests.', this)" onkeydown="handleKeyClick(event)" aria-pressed="false">
+            <span class="demo-sample-title" style="color: var(--safe-green);">
+              <span aria-hidden="true">✅</span> Legitimate Delivery Update
+            </span>
+            <span class="demo-sample-text">"Your USPS package #940012304 is out for delivery today."</span>
+          </button>
+        </div>
+
+        <div class="demo-result-box" role="region" aria-label="Security assessment verdict" aria-live="polite">
+          <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); letter-spacing: 0.05em;">FORTIFY SECURITY VERDICT</span>
+          <div id="demo-score" style="font-size: 3rem; font-weight: 800; color: var(--alert-red); margin-top: 8px; font-family: 'Outfit', sans-serif;">98%</div>
+          <div id="demo-label" style="font-size: 1.25rem; font-weight: 800; color: var(--alert-red); margin-bottom: 12px;">HIGH RISK SCAM</div>
+          <p id="demo-desc" style="font-size: 1.05rem; color: var(--text); line-height: 1.5;">Fake IRS arrest threat demanding immediate payment via gift cards.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Caregiver Section -->
+    <section class="section-padding" id="caregiver" aria-labelledby="caregiver-heading" style="border-top: 2px solid var(--surface-border);">
+      <div class="caregiver-container">
+        <div style="flex: 1;">
+          <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent-light); letter-spacing: 0.1em;">FOR THE WHOLE FAMILY</span>
+          <h2 id="caregiver-heading" style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; margin: 10px 0 16px 0;">Quiet alerts. Real peace of mind.</h2>
+          <p style="color: var(--text-muted); line-height: 1.6; font-size: 1.1rem; margin-bottom: 20px;">When Fortify flags a high-risk message, family caregivers receive a discreet notification — keeping adult children informed without causing panic for parents.</p>
+          <div style="display: flex; flex-direction: column; gap: 12px; font-size: 1.05rem; font-weight: 600;">
+            <div><span style="color: var(--safe-green);" aria-hidden="true">✓ </span> Zero daily noise — alerts only sent for high-risk threats.</div>
+            <div><span style="color: var(--safe-green);" aria-hidden="true">✓ </span> Support multiple family members on one dashboard.</div>
+          </div>
+        </div>
+
+        <div class="caregiver-card" role="region" aria-label="Family Dashboard Preview">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid var(--surface-border);">
+            <strong style="font-size: 1.1rem;">Family Dashboard</strong>
+            <span style="font-size: 0.85rem; color: var(--safe-green); background: var(--safe-green-bg); padding: 4px 12px; border-radius: 999px; font-weight: 800;">ALL SECURE</span>
+          </div>
+          <div style="padding-top: 16px; display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; gap: 12px; font-size: 0.95rem;">
+              <span style="background: var(--alert-red-bg); width: 32px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" aria-hidden="true">🚨</span>
+              <div>
+                <strong>Mom's iPhone</strong>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Phishing text auto-blocked 2m ago.</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 12px; font-size: 0.95rem;">
+              <span style="background: var(--safe-green-bg); width: 32px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" aria-hidden="true">🛡️</span>
+              <div>
+                <strong>Dad's Phone</strong>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Weekly check-in complete. 0 threats.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission & Impact Section -->
+    <section class="section-padding mission-section" id="mission" aria-labelledby="mission-heading">
+      <div class="section-title">
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent-light); letter-spacing: 0.1em;">OUR MISSION</span>
+        <h2 id="mission-heading" style="margin-top: 8px;">Every senior deserves protection.</h2>
+        <p>Financial fraud targets millions of elderly Americans every year. Fortify exists to protect every senior — regardless of income.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">$3.4B+</div>
+          <div class="stat-desc">Lost annually by U.S. seniors to fraud</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">80%</div>
+          <div class="stat-desc">Elder fraud incidents go unreported</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">5,000+</div>
+          <div class="stat-desc">Free accounts targeted for seniors</div>
+        </div>
+      </div>
+
+      <div class="donation-box" role="region" aria-labelledby="donate-heading">
+        <h3 id="donate-heading" style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800;">Fund a Free Account</h3>
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 6px; line-height: 1.5;">100% of public donations fund free Fortify access for seniors in assisted living communities.</p>
+
+        <div class="donate-amounts" role="radiogroup" aria-label="Select donation amount">
+          <button type="button" class="donate-chip" role="radio" aria-checked="false" onclick="selectDonate(this, '$10')">$10</button>
+          <button type="button" class="donate-chip active" role="radio" aria-checked="true" onclick="selectDonate(this, '$25')">$25</button>
+          <button type="button" class="donate-chip" role="radio" aria-checked="false" onclick="selectDonate(this, '$50')">$50</button>
+        </div>
+
+        <a href="https://foundation.aarp.org" target="_blank" rel="noopener noreferrer" id="donate-btn" class="btn btn-donate" style="width: 100%; font-size: 1.05rem;">
+          Donate $25 to the Cause
+        </a>
+      </div>
+    </section>
+
+    <!-- WAITLIST SECTION -->
+    <section class="section-padding" id="waitlist" aria-labelledby="waitlist-heading">
+      <div class="waitlist-card">
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent-light); letter-spacing: 0.1em;">EARLY ACCESS</span>
+        <h2 id="waitlist-heading" style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; margin-top: 8px;">Join the Fortify Waitlist</h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem; margin-top: 6px;">Select your role to reserve early access for your family.</p>
+
+        <div id="waitlist-form-container">
+          <div class="role-options" role="radiogroup" aria-label="Select your role">
+            <button type="button" class="role-btn active" role="radio" aria-checked="true" onclick="selectRole(this, 'Senior')">
+              <span class="role-dot" aria-hidden="true"></span>
+              I am a Senior
+            </button>
+            <button type="button" class="role-btn" role="radio" aria-checked="false" onclick="selectRole(this, 'Family Caregiver')">
+              <span class="role-dot" aria-hidden="true"></span>
+              I am a Family Caregiver
+            </button>
+            <button type="button" class="role-btn" role="radio" aria-checked="false" onclick="selectRole(this, 'Senior Living Director')">
+              <span class="role-dot" aria-hidden="true"></span>
+              I am a Senior Living Director
+            </button>
+          </div>
+
+          <label for="user-email" class="email-label">Email Address</label>
+          <input type="email" id="user-email" class="email-input" autocomplete="email" placeholder="e.g. mary.smith@example.com" required />
+
+          <button type="button" onclick="submitWaitlist()" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
+            Reserve My Place on Waitlist
+          </button>
+        </div>
+
+        <!-- Success Message -->
+        <div id="waitlist-success" style="display: none; padding-top: 20px;" aria-live="polite">
+          <div style="font-size: 2.5rem; margin-bottom: 10px;" aria-hidden="true">🎉</div>
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: var(--safe-green); font-weight: 800;">You're on the list!</h3>
+          <p style="color: var(--text-muted); margin-top: 6px; font-size: 1rem;">We've saved your spot. Share your invite link below:</p>
+          <div style="background: var(--surface); padding: 12px; border-radius: 12px; margin-top: 14px; font-family: monospace; font-size: 0.95rem; color: var(--accent-light); word-break: break-all; border: 2px solid var(--surface-border);">
+            https://fortify.app/join?ref=FORTIFY-8921
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="text-align: center; padding: 32px 16px 100px 16px; border-top: 2px solid var(--surface-border); font-size: 0.95rem; color: var(--text-muted);">
+    <p>Fortify by ElderConnect © 2026. All rights reserved.</p>
+  </footer>
+
+  <!-- Senior Accessibility Control Bar -->
+  <div class="acc-bar" role="toolbar" aria-label="Accessibility controls">
+    <button class="acc-btn" onclick="adjustFont(-1)" aria-label="Decrease text size">A-</button>
+    <button class="acc-btn" onclick="adjustFont(1)" aria-label="Increase text size">A+</button>
+    <button class="acc-btn" onclick="toggleTheme()" aria-label="Toggle Light or Dark Mode">Theme</button>
+    <button class="acc-btn" onclick="toggleContrast()" aria-label="Toggle High Contrast Mode">Contrast</button>
+  </div>
+
+  <script>
+    // Helper to announce changes to Screen Readers
+    function announce(message) {
+      const el = document.getElementById('sr-announcer');
+      if (el) {
+        el.textContent = message;
+      }
+    }
+
+    // Scroll Observer for Storytelling
+    const scrollSection = document.getElementById('how-it-works');
+    const screens = [
+      document.getElementById('screen-1'),
+      document.getElementById('screen-2'),
+      document.getElementById('screen-3'),
+      document.getElementById('screen-4')
+    ];
+    const texts = [
+      document.getElementById('text-1'),
+      document.getElementById('text-2'),
+      document.getElementById('text-3'),
+      document.getElementById('text-4')
+    ];
+    const flashOverlay = document.getElementById('flash-overlay');
+
+    let activeIndex = 0;
+
+    window.addEventListener('scroll', () => {
+      if (!scrollSection) return;
+      const rect = scrollSection.getBoundingClientRect();
+      const sectionHeight = scrollSection.clientHeight - window.innerHeight;
+      if (sectionHeight <= 0) return;
+
+      const scrollProgress = Math.max(0, Math.min(1, -rect.top / sectionHeight));
+      const newIndex = Math.min(3, Math.floor(scrollProgress * 4));
+
+      if (newIndex !== activeIndex) {
+        if (newIndex === 1 && flashOverlay) {
+          flashOverlay.classList.add('flash-anim');
+          setTimeout(() => flashOverlay.classList.remove('flash-anim'), 450);
+        }
+
+        if (screens[activeIndex]) screens[activeIndex].classList.remove('active');
+        if (texts[activeIndex]) texts[activeIndex].classList.remove('active');
+
+        if (screens[newIndex]) screens[newIndex].classList.add('active');
+        if (texts[newIndex]) texts[newIndex].classList.add('active');
+
+        activeIndex = newIndex;
+      }
+    });
+
+    // Keyboard support for clickable elements
+    function handleKeyClick(event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        event.target.click();
+      }
+    }
+
+    // Live Demo Selector
+    function setDemo(score, label, color, desc, btnElement) {
+      document.querySelectorAll('.demo-sample-card').forEach(card => {
+        card.classList.remove('active');
+        card.setAttribute('aria-pressed', 'false');
+      });
+
+      if (btnElement) {
+        btnElement.classList.add('active');
+        btnElement.setAttribute('aria-pressed', 'true');
+      }
+
+      const scoreEl = document.getElementById('demo-score');
+      const labelEl = document.getElementById('demo-label');
+      const descEl = document.getElementById('demo-desc');
+
+      if (scoreEl) {
+        scoreEl.innerText = score + '%';
+        scoreEl.style.color = color;
+      }
+      if (labelEl) {
+        labelEl.innerText = label;
+        labelEl.style.color = color;
+      }
+      if (descEl) {
+        descEl.innerText = desc;
+      }
+
+      announce(`Selected sample. Verdict: ${score}% ${label}. ${desc}`);
+    }
+
+    // Donation Selector
+    let selectedAmount = '$25';
+    function selectDonate(element, amount) {
+      document.querySelectorAll('.donate-chip').forEach(c => {
+        c.classList.remove('active');
+        c.setAttribute('aria-checked', 'false');
+      });
+      element.classList.add('active');
+      element.setAttribute('aria-checked', 'true');
+      selectedAmount = amount;
+      const btn = document.getElementById('donate-btn');
+      if (btn) btn.innerText = `Donate ${amount} to the Cause`;
+      announce(`Selected donation amount ${amount}`);
+    }
+
+    // Role & Waitlist Selector
+    let selectedRole = 'Senior';
+    function selectRole(element, role) {
+      document.querySelectorAll('.role-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-checked', 'false');
+      });
+      element.classList.add('active');
+      element.setAttribute('aria-checked', 'true');
+      selectedRole = role;
+      announce(`Selected role: ${role}`);
+    }
+
+    function submitWaitlist() {
+      const emailInput = document.getElementById('user-email');
+      const email = emailInput ? emailInput.value.trim() : '';
+
+      if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address.');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+
+      const formContainer = document.getElementById('waitlist-form-container');
+      const successBox = document.getElementById('waitlist-success');
+
+      if (formContainer) formContainer.style.display = 'none';
+      if (successBox) successBox.style.display = 'block';
+
+      announce('Thank you! You have been added to the Fortify waitlist.');
+    }
+
+    // Accessibility Controls
+    let currentFontSize = 18;
+    function adjustFont(delta) {
+      currentFontSize = Math.max(16, Math.min(26, currentFontSize + delta));
+      document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+      announce(`Text size set to ${currentFontSize} pixels`);
+    }
+
+    function toggleContrast() {
+      document.body.classList.remove('light-theme');
+      document.body.classList.toggle('high-contrast');
+      const isHc = document.body.classList.contains('high-contrast');
+      announce(isHc ? 'High contrast mode enabled' : 'High contrast mode disabled');
+    }
+
+    function toggleTheme() {
+      document.body.classList.remove('high-contrast');
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      announce(isLight ? 'Light theme enabled' : 'Dark theme enabled');
+    }
+  </script>
+</body>
+</html>
