@@ -633,7 +633,15 @@
       outline: none;
       margin-bottom: 16px;
     }
+    /* Default: Hide mobile text on desktop */
+    .mobile-text { display: none; }
+    .desktop-text { display: inline; }
 
+    /* Phone view: Swap text */
+    @media (max-width: 600px) {
+      .mobile-text { display: inline; }
+      .desktop-text { display: none; }
+    }
     .name-row { display: flex; gap: 16px; margin-bottom: 16px; }
     .name-row > div { flex: 1; }
     @media (max-width: 600px) {
@@ -793,7 +801,10 @@
         <a href="#mission">Mission</a>
       </nav>
       <div>
-        <a href="#waitlist" class="btn btn-primary">Join Interest list</a>
+        <a href="#waitlist" class="btn btn-primary">
+          <span class="desktop-text">Join Interest List</span>
+          <span class="mobile-text">Join List</span>
+        </a>
       </div>
     </div>
   </header>
