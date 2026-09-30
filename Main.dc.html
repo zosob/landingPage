@@ -3,19 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>Fortify : A Scam Protection for Seniors, by ElderConnect</title>
+  <title>Fortify : Scam Protection Research for Seniors, by ElderConnect</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
+      /* DEFAULT LIGHT THEME: Warm Cream & Alabaster (#FAF7F2) */
+      --bg: #FAF7F2;
+      --surface: #FFFFFF;
+      --surface-border: #CBD5E1;
+      --nav-bg: rgba(255, 255, 255, 0.95);
+      --text: #0F172A;
+      --text-muted: #334155; /* AAA compliant contrast (~9.7:1) */
+      --accent: #1D4ED8;
+      --accent-light: #2563EB;
+      --accent-glow: rgba(29, 78, 216, 0.15);
+      --alert-red: #DC2626;
+      --alert-red-bg: #FEE2E2;
+      --safe-green: #047857;
+      --safe-green-bg: #D1FAE5;
+      --base-font-size: 18px; /* Senior readable base font size */
+      --focus-ring: #1D4ED8;
+    }
+
+    body.dark-theme {
       --bg: #0B0F19;
       --surface: rgba(255, 255, 255, 0.07);
       --surface-border: rgba(255, 255, 255, 0.22);
       --nav-bg: rgba(11, 15, 25, 0.92);
       --text: #FFFFFF;
-      --text-muted: #D1D5DB; /* AAA compliant contrast (~10:1 on dark bg) */
+      --text-muted: #D1D5DB; /* AAA contrast on dark bg */
       --accent: #2563EB;
       --accent-light: #60A5FA;
       --accent-glow: rgba(37, 99, 235, 0.5);
@@ -23,25 +42,7 @@
       --alert-red-bg: rgba(239, 68, 68, 0.2);
       --safe-green: #10B981;
       --safe-green-bg: rgba(16, 185, 129, 0.2);
-      --base-font-size: 18px; /* Senior readable base font size */
       --focus-ring: #60A5FA;
-    }
-
-    body.light-theme {
-      --bg: #F8FAFC;
-      --surface: #FFFFFF;
-      --surface-border: #94A3B8;
-      --nav-bg: rgba(248, 250, 252, 0.95);
-      --text: #0F172A;
-      --text-muted: #334155; /* AAA contrast on light bg */
-      --accent: #1D4ED8;
-      --accent-light: #1E40AF;
-      --accent-glow: rgba(29, 78, 216, 0.25);
-      --alert-red: #DC2626;
-      --alert-red-bg: #FEE2E2;
-      --safe-green: #047857;
-      --safe-green-bg: #D1FAE5;
-      --focus-ring: #1D4ED8;
     }
 
     body.high-contrast {
@@ -72,14 +73,13 @@
       transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    /* Universal Focus Ring for Accessibility */
+    /* Accessibility Focus Ring */
     *:focus-visible {
       outline: 3px solid var(--focus-ring) !important;
       outline-offset: 3px !important;
       border-radius: 4px;
     }
 
-    /* Skip to content for Screen Readers */
     .skip-link {
       position: absolute;
       top: -60px;
@@ -93,9 +93,7 @@
       text-decoration: none;
       transition: top 0.2s ease;
     }
-    .skip-link:focus {
-      top: 16px;
-    }
+    .skip-link:focus { top: 16px; }
 
     /* Navigation Bar */
     header {
@@ -114,12 +112,16 @@
       justify-content: space-between;
       padding: 12px 20px;
       border-radius: 999px;
-      background: var(--nav-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
+      background: var(--nav-bg);
       border: 2px solid var(--surface-border);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    }
+    body.dark-theme .nav-container, body.high-contrast .nav-container {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
+
     .brand {
       display: flex;
       align-items: center;
@@ -145,15 +147,15 @@
     }
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       align-items: center;
     }
     .nav-links a {
       color: var(--text);
       text-decoration: none;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      padding: 10px 12px;
+      padding: 8px 10px;
       min-height: 48px;
       display: inline-flex;
       align-items: center;
@@ -162,10 +164,9 @@
     }
     .nav-links a:hover {
       color: var(--accent-light);
-      background: var(--surface);
+      background: rgba(29, 78, 216, 0.08);
     }
 
-    /* Buttons with Minimum Senior Touch Target (48px+) */
     .btn {
       font-size: 1rem;
       font-weight: 700;
@@ -180,7 +181,6 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      white-space: nowrap;
       line-height: 1.2;
     }
     .btn-outline {
@@ -204,7 +204,7 @@
 
     /* Hero Section */
     .hero {
-      padding: 140px 20px 70px 20px;
+      padding: 150px 20px 60px 20px;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -222,28 +222,29 @@
       font-weight: 700;
       color: var(--text);
       margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
-    .dot-green {
+    .dot-blue {
       width: 10px; height: 10px;
       border-radius: 999px;
-      background: var(--safe-green);
+      background: var(--accent-light);
       flex-shrink: 0;
     }
     .hero-title {
       font-family: 'Outfit', sans-serif;
-      font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      font-size: clamp(2.2rem, 5.5vw, 4rem);
       line-height: 1.15;
       font-weight: 800;
       letter-spacing: -0.02em;
-      max-width: 16em;
+      max-width: 18em;
       color: var(--text);
     }
     .hero-subtitle {
       margin-top: 20px;
-      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      font-size: clamp(1.1rem, 2.3vw, 1.3rem);
       line-height: 1.6;
       color: var(--text-muted);
-      max-width: 32em;
+      max-width: 36em;
     }
     .hero-subtitle span {
       color: var(--text);
@@ -259,10 +260,30 @@
       flex-wrap: wrap;
       justify-content: center;
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
     }
 
-    /* Continuous Scroll Section */
+    /* Research Notice Banner */
+    .research-banner {
+      max-width: 1120px;
+      margin: 10px auto 0 auto;
+      padding: 16px 24px;
+      background: #EFF6FF;
+      border: 2px dashed #93C5FD;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      color: #1E3A8A;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    body.dark-theme .research-banner {
+      background: rgba(37, 99, 235, 0.12);
+      border-color: rgba(96, 165, 250, 0.4);
+      color: var(--text-muted);
+    }
+
+    /* Scroll Storytelling Section */
     .scroll-story-section {
       position: relative;
       width: 100%;
@@ -294,16 +315,17 @@
       width: 310px;
       height: 560px;
       border-radius: 44px;
-      background: #000000;
-      border: 8px solid #27272A;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 0 2px var(--surface-border);
+      background: #FFFFFF;
+      border: 8px solid #3F3F46;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.12), 0 0 0 2px var(--surface-border);
       position: relative;
       flex-shrink: 0;
       overflow: hidden;
     }
-    body.light-theme .phone-mockup {
-      background: #FFFFFF;
-      border-color: #3F3F46;
+    body.dark-theme .phone-mockup {
+      background: #000000;
+      border-color: #27272A;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 0 2px var(--surface-border);
     }
     .phone-notch {
       position: absolute;
@@ -330,7 +352,6 @@
       transform: scale(1);
     }
 
-    /* SMS elements inside frame */
     .sms-box {
       background: #18181B;
       padding: 16px;
@@ -366,7 +387,7 @@
       background: #18181B;
       border: 3px solid #FFFFFF;
       border-radius: 12px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.8);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.3);
       transform: scale(0);
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 15;
@@ -378,18 +399,22 @@
     .gesture-hint {
       margin: auto;
       text-align: center;
-      background: rgba(255,255,255,0.12);
+      background: rgba(15, 23, 42, 0.05);
       border: 2px dashed var(--surface-border);
       padding: 20px 16px;
       border-radius: 20px;
       color: var(--text);
     }
+    body.dark-theme .gesture-hint {
+      background: rgba(255,255,255,0.12);
+    }
+
     .scan-beam {
       position: absolute;
       left: 0; right: 0;
       height: 4px;
-      background: #38BDF8;
-      box-shadow: 0 0 20px #38BDF8, 0 0 40px #38BDF8;
+      background: #2563EB;
+      box-shadow: 0 0 20px #2563EB, 0 0 40px #2563EB;
       animation: scanMove 2s infinite ease-in-out;
     }
     @keyframes scanMove { 0% { top: 20%; } 50% { top: 80%; } 100% { top: 20%; } }
@@ -415,7 +440,6 @@
       color: var(--alert-red);
     }
 
-    /* Text Block Side */
     .story-text-container {
       flex: 1;
       max-width: 500px;
@@ -444,7 +468,7 @@
       font-size: 0.9rem;
       font-weight: 800;
       letter-spacing: 0.1em;
-      color: var(--accent-light);
+      color: var(--accent);
       margin-bottom: 8px;
     }
     .step-title {
@@ -461,7 +485,7 @@
       color: var(--text-muted);
     }
 
-    /* General Sections */
+    /* Sections */
     .section-padding { padding: 90px 20px; }
     .section-title { text-align: center; margin-bottom: 48px; }
     .section-title h2 {
@@ -474,12 +498,28 @@
       color: var(--text-muted);
       margin-top: 10px;
       font-size: 1.15rem;
-      max-width: 34em;
+      max-width: 36em;
       margin-left: auto;
       margin-right: auto;
     }
 
-    /* Live Demo Section */
+    /* Grid Layouts */
+    .content-grid-2 {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .card-box {
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      padding: 32px 28px;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    /* Demo Section */
     .demo-grid {
       max-width: 1000px;
       margin: 0 auto;
@@ -487,6 +527,17 @@
       grid-template-columns: 1.1fr 1fr;
       gap: 24px;
       align-items: start;
+    }
+    .demo-disclaimer {
+      max-width: 1000px;
+      margin: 20px auto 0 auto;
+      padding: 14px 20px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-align: center;
     }
     .demo-sample-card {
       background: var(--surface);
@@ -502,12 +553,12 @@
       text-align: left;
     }
     .demo-sample-card:hover {
-      border-color: var(--accent-light);
-      background: rgba(37, 99, 235, 0.1);
+      border-color: var(--accent);
+      background: rgba(29, 78, 216, 0.05);
     }
     .demo-sample-card.active {
       border-color: var(--accent);
-      background: rgba(37, 99, 235, 0.18);
+      background: rgba(29, 78, 216, 0.08);
       box-shadow: 0 4px 16px var(--accent-glow);
     }
     .demo-sample-title {
@@ -531,32 +582,119 @@
       padding: 28px 24px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
     }
 
-    /* Mission */
+    /* Team Cards */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      max-width: 900px;
+      margin: 0 auto 36px auto;
+    }
+    .team-card {
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    }
+    .photo-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.04);
+      border: 2px dashed var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 8px;
+      margin-bottom: 16px;
+    }
+    body.dark-theme .photo-placeholder {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .students-card {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    }
+
+    /* Funding & Institutional Section */
+    .funding-card {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      border-radius: 24px;
+      padding: 36px 32px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    }
+    .uni-logo-placeholder {
+      width: 140px;
+      height: 100px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.04);
+      border: 2px dashed var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+    body.dark-theme .uni-logo-placeholder {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Mission & Stats */
     .mission-section {
-      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, var(--surface) 50%, rgba(0,0,0,0) 100%);
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(29,78,216,0.04) 50%, rgba(0,0,0,0) 100%);
     }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
     }
     .stat-card {
       background: var(--surface);
       border: 2px solid var(--surface-border);
-      padding: 24px 16px;
+      padding: 24px 18px;
       border-radius: 20px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
     }
     .stat-number {
       font-family: 'Outfit', sans-serif;
       font-size: 2.2rem;
       font-weight: 800;
-      color: var(--accent-light);
+      color: var(--accent);
     }
     .stat-desc {
       font-size: 0.95rem;
@@ -564,43 +702,65 @@
       margin-top: 6px;
       font-weight: 600;
     }
+    .stat-citation {
+      margin-top: 14px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--surface-border);
+      padding-top: 8px;
+      word-break: break-all;
+    }
 
-    /* Waitlist Form Styling */
+    /* Waitlist & Form */
     .waitlist-card {
-      max-width: 560px;
+      max-width: 580px;
       margin: 0 auto;
       background: var(--surface);
       border: 2px solid var(--surface-border);
       padding: 36px 28px;
       border-radius: 26px;
       text-align: center;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.04);
+    }
+    .privacy-notice {
+      background: rgba(29, 78, 216, 0.06);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+      text-align: left;
     }
     .role-options {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin: 22px 0;
+      margin: 20px 0;
     }
     .role-btn {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 16px 18px;
-      min-height: 54px;
+      padding: 14px 18px;
+      min-height: 52px;
       border-radius: 16px;
-      background: rgba(255,255,255,0.06);
+      background: rgba(15, 23, 42, 0.02);
       border: 2px solid var(--surface-border);
       color: var(--text);
       cursor: pointer;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       text-align: left;
       width: 100%;
       transition: all 0.2s ease;
     }
+    body.dark-theme .role-btn {
+      background: rgba(255, 255, 255, 0.06);
+    }
     .role-btn.active {
       border-color: var(--accent);
-      background: rgba(37, 99, 235, 0.18);
+      background: rgba(29, 78, 216, 0.1);
     }
     .role-dot {
       width: 18px; height: 18px;
@@ -609,7 +769,7 @@
       flex-shrink: 0;
     }
     .role-btn.active .role-dot {
-      border-color: var(--accent-light);
+      border-color: var(--accent);
       background: var(--accent);
     }
 
@@ -623,41 +783,67 @@
     }
     .email-input {
       width: 100%;
-      height: 54px;
+      height: 52px;
       padding: 12px 18px;
       border-radius: 14px;
-      background: rgba(255,255,255,0.08);
+      background: #FFFFFF;
       border: 2px solid var(--surface-border);
-      color: var(--text);
+      color: #0F172A;
       font-size: 1.05rem;
       outline: none;
       margin-bottom: 16px;
     }
-    /* Default: Hide mobile text on desktop */
-    .mobile-text { display: none; }
-    .desktop-text { display: inline; }
-
-    /* Phone view: Swap text */
-    @media (max-width: 600px) {
-      .mobile-text { display: inline; }
-      .desktop-text { display: none; }
+    body.dark-theme .email-input {
+      background: rgba(255,255,255,0.08);
+      color: #FFFFFF;
     }
+
     .name-row { display: flex; gap: 16px; margin-bottom: 16px; }
     .name-row > div { flex: 1; }
-    @media (max-width: 600px) {
-      .name-row { flex-direction: column; gap: 0; }
-      .name-row .email-input { margin-bottom: 16px; }
+
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .contact-item {
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      padding: 20px;
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: border-color 0.2s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .contact-item:hover {
+      border-color: var(--accent);
     }
 
-    body.light-theme .email-input {
-      background: #FFFFFF;
-      color: #0F172A;
+    /* GitHub Transparency Section */
+    .github-box {
+      max-width: 800px;
+      margin: 40px auto 0 auto;
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
     }
 
-    /* Accessibility Toolbar Floating Bar */
+    /* Senior Accessibility Control Bar — Shifted to Bottom-Left */
     .acc-bar {
       position: fixed;
-      bottom: 20px; right: 20px;
+      bottom: 16px;
+      left: 12px;
+      right: auto;
       z-index: 2000;
       display: flex;
       align-items: center;
@@ -668,8 +854,9 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 2px solid var(--surface-border);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     }
+
     .acc-btn {
       background: var(--surface);
       color: var(--text);
@@ -686,13 +873,30 @@
       justify-content: center;
       transition: all 0.2s ease;
     }
+
     .acc-btn:hover {
       border-color: var(--accent);
       background: var(--accent);
       color: #FFFFFF;
     }
 
-    /* Visually hidden accessibility status announcements */
+    /* Mobile Responsiveness Adjustment */
+    @media (max-width: 820px) {
+      .acc-bar {
+        bottom: 24px;
+        left: 12px;
+        right: auto;
+        padding: 4px 8px;
+        gap: 4px;
+      }
+      .acc-btn {
+        min-height: 38px;
+        min-width: 38px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+      }
+    }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -705,40 +909,37 @@
       border: 0;
     }
 
-    /* Reduced Motion Accessibility Settings */
     @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-      }
-      .scroll-story-section {
-        height: auto;
-      }
-      .sticky-viewport {
-        position: relative;
-        height: auto;
-        padding: 40px 0;
-      }
+      * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      .scroll-story-section { height: auto; }
+      .sticky-viewport { position: relative; height: auto; padding: 40px 0; }
       .scan-beam { display: none; }
     }
 
-    /* Responsive adjustments */
+    /* Mobile Layout Fixes */
     @media (max-width: 820px) {
       .nav-links { display: none !important; }
+      .nav-container { padding: 8px 14px; }
+      .nav-container .btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        min-height: 40px;
+      }
+      .desktop-btn-text { display: none; }
+      .mobile-btn-text { display: inline; }
 
       .story-container {
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        padding: 80px 20px 80px 20px;
+        padding: 100px 20px 90px 20px !important;
         gap: 20px;
         height: 100%;
       }
 
       .phone-mockup {
-        width: 240px;
-        height: 420px;
+        width: 230px;
+        height: 400px;
         border-width: 6px;
         border-radius: 36px;
       }
@@ -762,27 +963,44 @@
         opacity: 0;
         display: none;
       }
-      .story-step-text.active {
-        display: flex;
-        opacity: 1;
-      }
+      .story-step-text.active { display: flex; opacity: 1; }
 
-      .demo-grid, .stats-grid {
+      .demo-grid, .content-grid-2, .stats-grid, .contact-grid {
         grid-template-columns: 1fr;
         flex-direction: column;
       }
+
+      .funding-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .name-row { flex-direction: column; gap: 0; }
+      .name-row .email-input { margin-bottom: 16px; }
+    }
+
+    /* Stack team grid only on smaller screens (below 600px) */
+    @media (max-width: 600px) {
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 821px) {
+      .mobile-btn-text { display: none; }
+      .desktop-btn-text { display: inline; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Skip to main content link for screen reader / keyboard accessibility -->
+  <!-- Screen Reader Skip Navigation -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Live ARIA status region for announcements -->
+  <!-- ARIA Live Announcement Area -->
   <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Navigation -->
+  <!-- Header Navigation -->
   <header role="banner">
     <div class="nav-container">
       <a href="#" class="brand" aria-label="Fortify by ElderConnect Homepage">
@@ -796,14 +1014,16 @@
         </div>
       </a>
       <nav class="nav-links" aria-label="Main navigation">
+        <a href="#about-fortify">About</a>
         <a href="#how-it-works">How It Works</a>
-        <a href="#demo">Try Demo</a>
-        <a href="#mission">Mission</a>
+        <a href="#demo">Demo</a>
+        <a href="#team">Research Team</a>
+        <a href="#contact">Contact</a>
       </nav>
       <div>
         <a href="#waitlist" class="btn btn-primary">
-          <span class="desktop-text">Join Interest List</span>
-          <span class="mobile-text">Join List</span>
+          <span class="desktop-btn-text">Join Interest List</span>
+          <span class="mobile-btn-text">Join List</span>
         </a>
       </div>
     </div>
@@ -813,18 +1033,55 @@
     <!-- Hero Section -->
     <section class="hero" aria-labelledby="hero-heading">
       <div class="badge">
-        <span class="dot-green" aria-hidden="true"></span>
-        Interest List Open
+        <span class="dot-blue" aria-hidden="true"></span>
+        Academic Research &amp; Development Project
       </div>
-      <h1 id="hero-heading" class="hero-title">Smart scam protection built for simplicity.</h1>
-      <p class="hero-subtitle">Fortify gives seniors an instant answer to <span>"Is this text a scam?"</span> — with zero tech friction.</p>
+      <h1 id="hero-heading" class="hero-title">AI-assisted scam detection designed for older adults.</h1>
+      <p class="hero-subtitle">Fortify assists seniors and families in identifying <span>potential scam indicators</span> in text messages using simple screenshot analysis.</p>
+
       <div class="hero-btns">
-        <a href="#waitlist" class="btn btn-primary" style="width: 100%; max-width: 240px;">Join the Interest List</a>
-        <a href="#demo" class="btn btn-outline" style="width: 100%; max-width: 220px;">Try Demo</a>
+        <a href="#waitlist" class="btn btn-primary" style="width: 100%; max-width: 240px;">Join Interest List</a>
+        <a href="#demo" class="btn btn-outline" style="width: 100%; max-width: 220px;">Try Interactive Demo</a>
+      </div>
+
+      <!-- Institutional Research Banner -->
+      <div class="research-banner">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span><strong>Ongoing Research Effort:</strong> Fortify is a research project supported by <strong>St. Cloud State University</strong>. User feedback helps refine scam classification models.</span>
       </div>
     </section>
 
-    <!-- CONTINUOUS STICKY SCROLL STORYTELLING SECTION -->
+    <!-- SECTION 1 & 2: ABOUT FORTIFY & ABOUT ELDERCONNECT -->
+    <section class="section-padding" id="about-fortify" aria-labelledby="about-heading" style="border-top: 2px solid var(--surface-border);">
+      <div class="section-title">
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent); letter-spacing: 0.1em;">THE INITIATIVE</span>
+        <h2 id="about-heading">Empowering Safe Technology Navigation</h2>
+      </div>
+
+      <div class="content-grid-2">
+        <div class="card-box">
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 12px;">About Fortify</h3>
+          <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;">
+            Fortify is an AI-assisted scam detection tool designed to help older adults, caregivers, and community organizations identify suspicious digital communication.
+          </p>
+          <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; margin-top: 14px;">
+            Digital scams targeting seniors have grown increasingly sophisticated. Fortify eliminates technical friction by evaluating standard phone screenshots, providing plain-language risk evaluations without requiring users to copy malicious links or navigate complex settings.
+          </p>
+        </div>
+
+        <div class="card-box">
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 12px;">About ElderConnect</h3>
+          <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;">
+            ElderConnect is an initiative focused on helping older adults navigate technology safely and confidently.
+          </p>
+          <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; margin-top: 14px;">
+            By bridging human-centered design, digital literacy support, and applied cybersecurity research, ElderConnect develops accessible tools and educational resources that empower seniors to maintain independence and safety in an interconnected world.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORYTELLING SECTION (RESPONSIBLE LANGUAGE APPLIED) -->
     <section class="scroll-story-section" id="how-it-works" aria-label="How Fortify Works step-by-step guide">
       <div class="sticky-viewport">
         <div class="story-container">
@@ -838,7 +1095,7 @@
             <div class="phone-screen active" id="screen-1">
               <div style="font-size: 0.75rem; color: #A1A1AA; text-align: center;">Messages • 2:14 PM</div>
               <div class="sms-box">
-                <div class="sms-header">⚠️New Friend:</div>
+                <div class="sms-header">⚠️ New Contact:</div>
                 Hi dear, I'm stuck overseas. Can you buy two $200 gift cards and send me the codes today? Please don't tell anyone.
               </div>
             </div>
@@ -851,7 +1108,7 @@
                   <circle cx="12" cy="18" r="1"></circle>
                 </svg>
                 <div style="margin-top: 8px; font-weight: 800; font-size: 0.95rem;">Take Screenshot</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Power + Volume Up</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Standard phone capture</div>
               </div>
               <div class="screenshot-thumb">
                 <div style="width: 100%; height: 100%; background: rgba(245, 158, 11, 0.25); border-radius: 6px; border-left: 3px solid #F59E0B;"></div>
@@ -860,96 +1117,59 @@
 
             <!-- Screen 3 -->
             <div class="phone-screen" id="screen-3">
-              <!-- Modernized Mini Fortify / ElderConnect Screen -->
-              <div style="position: relative; overflow: hidden; background: #FFFFFF; color: #0F172A; border-radius: 20px; padding: 18px 14px; margin-top: 8px; text-align: center; border: 1px solid #E2E8F0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);">
-
-                <!-- App Header -->
+              <div style="position: relative; overflow: hidden; background: #FFFFFF; color: #0F172A; border-radius: 20px; padding: 18px 14px; margin-top: 8px; text-align: center; border: 1px solid #E2E8F0;">
                 <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F1F5F9; padding-bottom: 8px; margin-bottom: 12px;">
-                  <div style="font-size: 0.75rem; font-weight: 800; color: #9333EA; letter-spacing: -0.01em; display: flex; align-items: center; gap: 4px;">
-                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #9333EA; display: inline-block;"></span>
-                    ElderConnect
-                  </div>
-                  <span style="font-size: 0.62rem; font-weight: 700; background: #F3E8FF; color: #7E22CE; padding: 2px 8px; border-radius: 999px;">AI Shield</span>
+                  <div style="font-size: 0.75rem; font-weight: 800; color: #2563EB;">ElderConnect</div>
+                  <span style="font-size: 0.62rem; font-weight: 700; background: #DBEAFE; color: #1E40AF; padding: 2px 8px; border-radius: 999px;">AI Shield Scan</span>
                 </div>
-
-                <!-- Main Title & Desc -->
-                <div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; letter-spacing: -0.02em;">Is this profile real?</div>
-                <div style="font-size: 0.72rem; color: #64748B; margin-top: 4px; line-height: 1.4; padding: 0 4px;">Upload a screenshot to detect fake profiles or scam activity instantly.</div>
-
-                <!-- Upload Dropzone -->
-                <div style="border: 2px dashed #CBD5E1; border-radius: 14px; background: #F8FAFC; padding: 14px 10px; margin-top: 14px; transition: border-color 0.2s ease;">
-                  <!-- Upload Icon -->
-                  <div style="width: 36px; height: 36px; border-radius: 10px; background: #F3E8FF; color: #9333EA; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(147, 51, 234, 0.15);">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                      <polyline points="17 8 12 3 7 8"/>
-                      <line x1="12" y1="3" x2="12" y2="15"/>
-                    </svg>
-                  </div>
-
-                  <!-- File Status Badge -->
-                  <div style="display: inline-flex; align-items: center; gap: 4px; background: #ECFDF5; border: 1px solid #A7F3D0; color: #047857; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-top: 8px;">
-                    <span>screenshot.png</span>
-                    <span style="font-weight: 900;">✓</span>
-                  </div>
-                </div>
-
-                <!-- Action Button -->
-                <div style="background: linear-gradient(135deg, #9333EA 0%, #7E22CE 100%); color: #FFFFFF; border-radius: 12px; padding: 11px; font-size: 0.85rem; font-weight: 800; margin-top: 14px; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3); letter-spacing: 0.01em;">
-                  Analyse Profile
-                </div>
-
-                <!-- Scanning Beam Overlay -->
+                <div style="font-size: 1rem; font-weight: 800; color: #0F172A;">Analyzing Message Indicators</div>
+                <div style="font-size: 0.72rem; color: #64748B; margin-top: 4px;">Evaluating text patterns against known fraud heuristics...</div>
                 <div class="scan-beam"></div>
               </div>
-
-              <!-- Bottom Pulse Status Text -->
-              <div style="margin-top: 16px; font-size: 0.85rem; font-weight: 800; color: #38BDF8; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span style="width: 8px; height: 8px; border-radius: 50%; background: #38BDF8; box-shadow: 0 0 10px #38BDF8; display: inline-block;"></span>
-                Reading text &amp; analyzing...
+              <div style="margin-top: 16px; font-size: 0.85rem; font-weight: 800; color: #2563EB; text-align: center;">
+                Processing patterns...
               </div>
             </div>
 
             <!-- Screen 4 -->
             <div class="phone-screen" id="screen-4">
               <div class="verdict-card">
-                <div class="verdict-label">RISK VERDICT</div>
+                <div class="verdict-label">RISK ESTIMATE</div>
                 <div class="verdict-score">98%</div>
-                <div style="font-size: 0.85rem; font-weight: 800; color: var(--alert-red);">HIGH RISK SCAM</div>
+                <div style="font-size: 0.85rem; font-weight: 800; color: var(--alert-red);">HIGH SCAM LIKELIHOOD</div>
               </div>
               <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; line-height: 1.4;">
-                Don't reply or send gift cards. Talk to someone you trust first.
+                Contains common indicators: emergency gift card request and demand for secrecy.
               </div>
-              <button class="btn btn-primary" style="margin-top: auto; background: var(--alert-red); width: 100%; font-size: 0.85rem; padding: 10px;" tabindex="-1">Block Sender</button>
             </div>
 
           </div>
 
-          <!-- Scroll-linked Text Blocks -->
+          <!-- Text Blocks (Updated Language) -->
           <div class="story-text-container" id="story-text-container" aria-live="polite">
 
             <div class="story-step-text active" id="text-1">
               <div class="step-tag">STEP 01 — THE THREAT</div>
-              <h2 class="step-title">Scams happen in seconds.</h2>
-              <p class="step-desc">Fraudulent text messages impersonate people or loved ones using high-urgency language.</p>
+              <h2 class="step-title">Scam attempts act on urgency.</h2>
+              <p class="step-desc">Fraudulent messages impersonate family or authority figures, creating artificial pressure to bypass critical thinking.</p>
             </div>
 
             <div class="story-step-text" id="text-2">
               <div class="step-tag">STEP 02 — THE ACTION</div>
-              <h2 class="step-title">No tech skills needed. Just screenshot.</h2>
-              <p class="step-desc">Seniors don't need to copy links or fill out forms. A simple screenshot triggers instant protection.</p>
+              <h2 class="step-title">Zero technical setup. Just a screenshot.</h2>
+              <p class="step-desc">No copying links, retyping messages, or adjusting system settings. Taking a simple phone screenshot triggers the evaluation process.</p>
             </div>
 
             <div class="story-step-text" id="text-3">
               <div class="step-tag">STEP 03 — THE ANALYSIS</div>
-              <h2 class="step-title">Instant AI Security Scan.</h2>
-              <p class="step-desc">Fortify's AI engine instantly pattern matches the scam message.</p>
+              <h2 class="step-title">Pattern matching AI evaluation.</h2>
+              <p class="step-desc">Fortify analyzes structural text patterns, language pressure tactics, and known fraud indicators.</p>
             </div>
 
             <div class="story-step-text" id="text-4">
               <div class="step-tag">STEP 04 — THE RESULT</div>
-              <h2 class="step-title">Total clarity & peace of mind.</h2>
-              <p class="step-desc">Get an unquestionable risk score with plain-language advice and one-tap actions to block threats.</p>
+              <h2 class="step-title">Informed decision support.</h2>
+              <p class="step-desc">Receive a scam risk estimate along with clear guidance on identified risk indicators to help you make informed choices.</p>
             </div>
 
           </div>
@@ -958,136 +1178,285 @@
       </div>
     </section>
 
-    <!-- Demo Section -->
+    <!-- SECTION 7: DEMO WITH REQUIRED DISCLAIMER -->
     <section class="section-padding" id="demo" aria-labelledby="demo-heading">
       <div class="section-title">
-        <h2 id="demo-heading">See How Fortify Works</h2>
-        <p>Select a sample message below to see how Fortify scores risk. These are illustrative examples.</p>
+        <h2 id="demo-heading">Interactive Risk Assessment Demo</h2>
+        <p>Explore sample messages below to see how Fortify identifies risk indicators.</p>
       </div>
-      <div class="demo-grid">
+
+      <!-- REQUIRED DEMO DISCLAIMER -->
+      <div class="demo-disclaimer" role="note">
+        <strong>Educational Disclaimer:</strong> This demonstration is intended for educational and illustrative purposes. Results shown are sample outputs and do not represent guarantees of scam detection.
+      </div>
+
+      <div class="demo-grid" style="margin-top: 24px;">
         <div role="region" aria-label="Sample message options">
-          <button class="demo-sample-card active" id="demo-btn-1" onclick="setDemo(96, 'HIGH RISK', 'var(--alert-red)', 'A new online friend, a sudden money problem, and a request for a large loan are common signs of a fake-profile romance scam.', this)" onkeydown="handleKeyClick(event)" aria-pressed="true">
+          <button class="demo-sample-card active" id="demo-btn-1" onclick="setDemo(96, 'POTENTIAL SCAM INDICATORS DETECTED', 'var(--alert-red)', 'Identified indicators: New acquaintance, sudden financial hardship, request for peer wire transfer.', this)" onkeydown="handleKeyClick(event)" aria-pressed="true">
             <span class="demo-sample-title" style="color: var(--alert-red);">
-              <span aria-hidden="true">💔</span> Online Romance Request
+              <span aria-hidden="true">💔</span> Impersonation / Romance
             </span>
             <span class="demo-sample-text">"I've never felt this close to anyone. My account is frozen, could you lend me $2,000 until Friday?"</span>
           </button>
 
-          <button class="demo-sample-card" id="demo-btn-2" onclick="setDemo(94, 'HIGH RISK', 'var(--alert-red)', 'A family member in crisis, a new phone number, pressure to pay fast, and a request for secrecy are classic impersonation tactics.', this)" onkeydown="handleKeyClick(event)" aria-pressed="false">
+          <button class="demo-sample-card" id="demo-btn-2" onclick="setDemo(94, 'POTENTIAL SCAM INDICATORS DETECTED', 'var(--alert-red)', 'Identified indicators: Family emergency claim, new phone number, urgency, secrecy request.', this)" onkeydown="handleKeyClick(event)" aria-pressed="false">
             <span class="demo-sample-title" style="color: var(--alert-red);">
-              <span aria-hidden="true">🚨</span> Grandchild in Trouble
+              <span aria-hidden="true">🚨</span> Emergency Relative Claim
             </span>
             <span class="demo-sample-text">"Grandma, it's me! I lost my phone and I'm in trouble. Please send $900 today and don't tell Mom."</span>
           </button>
 
-          <button class="demo-sample-card" id="demo-btn-3" onclick="setDemo(3, 'LOW RISK', 'var(--safe-green)', 'An everyday conversation with no requests for money, gift cards, codes, or personal details.', this)" onkeydown="handleKeyClick(event)" aria-pressed="false">
+          <button class="demo-sample-card" id="demo-btn-3" onclick="setDemo(3, 'LOW RISK INDICATORS DETECTED', 'var(--safe-green)', 'No high-urgency language, financial demands, gift card requests, or suspicious links detected.', this)" onkeydown="handleKeyClick(event)" aria-pressed="false">
             <span class="demo-sample-title" style="color: var(--safe-green);">
-              <span aria-hidden="true">✅</span> Class Group Chat
+              <span aria-hidden="true">✅</span> Standard Class Message
             </span>
             <span class="demo-sample-text">"Did the room for today's class move to Cedar 214? I saved you a seat by the window."</span>
           </button>
         </div>
 
         <div class="demo-result-box" role="region" aria-label="Security assessment verdict" aria-live="polite">
-          <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); letter-spacing: 0.05em;">SCAM PROBABILITY</span>
+          <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); letter-spacing: 0.05em;">SCAM LIKELIHOOD ESTIMATE</span>
           <div id="demo-score" style="font-size: 3rem; font-weight: 800; color: var(--alert-red); margin-top: 8px; font-family: 'Outfit', sans-serif;">96%</div>
-          <div id="demo-label" style="font-size: 1.25rem; font-weight: 800; color: var(--alert-red); margin-bottom: 12px;">HIGH RISK</div>
-          <p id="demo-desc" style="font-size: 1.05rem; color: var(--text); line-height: 1.5;">A new online friend, a sudden money problem, and a request for a large loan are common signs of a fake-profile romance scam.</p>
+          <div id="demo-label" style="font-size: 1rem; font-weight: 800; color: var(--alert-red); margin-bottom: 12px;">POTENTIAL SCAM INDICATORS DETECTED</div>
+          <p id="demo-desc" style="font-size: 1rem; color: var(--text); line-height: 1.5;">Identified indicators: New acquaintance, sudden financial hardship, request for peer wire transfer.</p>
+        </div>
+      </div>
+
+      <!-- Centered Video Demonstration Card -->
+      <div style="max-width: 800px; margin: 40px auto 0 auto; background: var(--surface); border: 2px solid var(--surface-border); border-radius: 24px; padding: 28px 24px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">
+          Profile Analysis Walkthrough
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 18px;">
+          Watch how the AI evaluates uploaded screenshots to detect fake profile indicators and risk scores.
+        </p>
+
+        <div style="position: relative; width: 100%; border-radius: 16px; overflow: hidden; border: 2px solid var(--surface-border); background: #000;">
+          <video controls width="100%" style="display: block; width: 100%; max-height: 520px; outline: none; margin: 0 auto;">
+            <source src="demo_walkthrough.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
         </div>
       </div>
     </section>
 
-    <!-- Mission & Impact Section -->
+    <!-- SECTION 3: MEET THE RESEARCH TEAM -->
+    <section class="section-padding" id="team" aria-labelledby="team-heading" style="border-top: 2px solid var(--surface-border);">
+      <div class="section-title">
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent); letter-spacing: 0.1em;">ACADEMIC LEADERSHIP</span>
+        <h2 id="team-heading">Meet the Research Team</h2>
+        <p>Fortify is developed through an interdisciplinary research team dedicated to accessible cybersecurity tools.</p>
+      </div>
+
+      <div class="team-grid">
+        <!-- Dr. Indira Dutta Card -->
+        <div class="team-card">
+          <div class="photo-placeholder" style="border: none; padding: 0; overflow: hidden; width: 120px; height: 120px; border-radius: 999px;">
+            <img src="indira_dutta.jpg" alt="Dr. Indira Dutta" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+          </div>
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 800; margin-top: 12px;">Dr. Indira Dutta</h3>
+          <span style="font-size: 0.9rem; color: var(--accent); font-weight: 700; margin-top: 2px;">Principal Investigator</span>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 10px; line-height: 1.5;">
+            Cybersecurity researcher, educator, and co-creator of ElderConnect. Human-centered cybersecurity solutions architect.
+          </p>
+        </div>
+
+        <!-- Dr. Bhaskar Ghosh Card -->
+        <div class="team-card">
+          <div class="photo-placeholder" style="border: none; padding: 0; overflow: hidden; width: 120px; height: 120px; border-radius: 999px;">
+            <img src="bhaskar_ghosh.jpg" alt="Dr. Bhaskar Ghosh" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+          </div>
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 800; margin-top: 12px;">Dr. Bhaskar Ghosh</h3>
+          <span style="font-size: 0.9rem; color: var(--accent); font-weight: 700; margin-top: 2px;">Co-Principal Investigator</span>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 10px; line-height: 1.5;">
+            Leading software architecture, AI integration, and technical development to build secure, scalable, and reliable ElderConnect solutions.
+          </p>
+        </div>
+      </div>
+
+      <div class="students-card">
+        <div class="photo-placeholder" style="margin: 0 auto 16px auto; width: 100px; height: 100px;" role="img" aria-label="Student Researchers Placeholder">
+          [STUDENT TEAM PHOTO PLACEHOLDER]
+        </div>
+        <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 800;">Student Researchers</h4>
+        <p style="color: var(--text-muted); font-size: 0.98rem; margin-top: 8px; max-width: 680px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+          The project is currently supported by <strong>three active student researchers: Sowmya Ramkishanraogari, Naseer Moiz, and Javelia Morrison-Galimore</strong>, whose work contributes to the research, development, and community-focused goals of ElderConnect.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: SUPPORTED BY / INSTITUTIONAL FUNDING -->
+    <section class="section-padding" id="funding" aria-labelledby="funding-heading" style="border-top: 2px solid var(--surface-border);">
+      <div class="section-title" style="margin-bottom: 32px;">
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent); letter-spacing: 0.1em;">INSTITUTIONAL SUPPORT</span>
+        <h2 id="funding-heading">Funding &amp; Sponsorship</h2>
+      </div>
+
+      <div class="funding-card">
+        <div class="uni-logo-placeholder" role="img" aria-label="St. Cloud State University Logo" style="overflow: hidden; padding: 8px; border: none;">
+          <img src="logo.png" alt="St. Cloud State University Logo" style="width: 100%; height: 100%; object-fit: contain;" />
+        </div>
+        <div>
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text);">Supported by St. Cloud State University</h3>
+          <p style="color: var(--text-muted); font-size: 1rem; margin-top: 8px; line-height: 1.6;">
+            Fortify is supported through research funding provided by <strong>St. Cloud State University</strong>. This institutional grant backing facilitates algorithm research, accessibility user testing, and academic project development.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 10: CITATIONS ON STATISTICS SECTION -->
     <section class="section-padding mission-section" id="mission" aria-labelledby="mission-heading">
       <div class="section-title">
-        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent-light); letter-spacing: 0.1em;">OUR MISSION</span>
-        <h2 id="mission-heading" style="margin-top: 8px;">Empowering every senior to stay safe and confident online.</h2>
-        <p>Financial fraud targets millions of elderly Americans every year. Fortify exists to protect every senior - regardless of income.</p>
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent); letter-spacing: 0.1em;">PROBLEM SCOPE</span>
+        <h2 id="mission-heading">Targeted Vulnerability in Digital Fraud</h2>
+        <p>Elder fraud remains a critical societal challenge requiring proactive technological safeguards.</p>
       </div>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-number">$3.4B+</div>
-          <div class="stat-desc">Lost annually by U.S. seniors to fraud</div>
+          <div>
+            <div class="stat-number">$3.4B+</div>
+            <div class="stat-desc">Reported losses by older adults in recent annual federal estimates</div>
+          </div>
+          <div class="stat-citation">
+            Source: <a href="https://www.fbi.gov/news/stories/elder-fraud-in-focus" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">FBI Elder Fraud Report</a>
+          </div>
         </div>
+
         <div class="stat-card">
-          <div class="stat-number">80%</div>
-          <div class="stat-desc">Elder fraud incidents go unreported</div>
+          <div>
+            <div class="stat-number">80%</div>
+            <div class="stat-desc">Estimated proportion of financial exploitation incidents unsubmitted to authorities</div>
+          </div>
+          <div class="stat-citation">
+            Source: Wood, S., &amp; Lichtenberg, P. A. (2017). <em>Clinical Gerontologist</em>, 40(1), 3-13. doi:10.1080/07317115.2016.1203382
+          </div>
         </div>
+
         <div class="stat-card">
-          <div class="stat-number">147,000+</div>
-          <div class="stat-desc">Victims aged 60+ reported in 2024</div>
+          <div>
+            <div class="stat-number">147,000+</div>
+            <div class="stat-desc">Elder fraud complaints filed with law enforcement agencies in 2024</div>
+          </div>
+          <div class="stat-citation">
+            Source: <a href="https://www.ic3.gov/crimeinfo/elderfraud" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">FBI IC3 Elder Fraud Report</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- WAITLIST SECTION -->
+    <!-- SECTION 8 & 9: WAITLIST FORM WITH PRIVACY NOTICE & CONFIRMATION -->
     <section class="section-padding" id="waitlist" aria-labelledby="waitlist-heading">
       <div class="waitlist-card">
-        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent-light); letter-spacing: 0.1em;">INTEREST LIST</span>
-        <h2 id="waitlist-heading" style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; margin-top: 8px;">Join the Fortify Interest List</h2>
-        <p style="color: var(--text-muted); font-size: 1.05rem; margin-top: 6px;">Select your role to join the Interest List.</p>
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent); letter-spacing: 0.1em;">EARLY ACCESS</span>
+        <h2 id="waitlist-heading" style="font-family: 'Outfit', sans-serif; font-size: 2.1rem; font-weight: 800; margin-top: 6px;">Join the Fortify Interest List</h2>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-top: 6px;">Sign up to receive updates regarding development progress and early testing opportunities.</p>
 
-        <div id="waitlist-form-container">
-          <!-- Netlify Enabled Form -->
+        <!-- SECTION 8: PRIVACY DISCLOSURE -->
+        <div class="privacy-notice" role="note">
+          <strong style="color: var(--text);">Privacy Statement:</strong> We only use your information to provide updates regarding Fortify. We do not sell personal information.
+        </div>
+
+        <div id="waitlist-form-container" style="margin-top: 20px;">
           <form name="waitlist" method="POST" data-netlify="true" id="waitlist-form" onsubmit="handleNetlifySubmit(event)">
             <input type="hidden" name="form-name" value="waitlist" />
-            <input type="hidden" name="role" id="hidden-role-input" value="Senior" />
+            <input type="hidden" name="role" id="hidden-role-input" value="For Myself" />
 
-            <div class="role-options" role="radiogroup" aria-label="Select your role">
-              <button type="button" class="role-btn active" role="radio" aria-checked="true" onclick="selectRole(this, 'Senior')">
+            <div class="role-options" role="radiogroup" aria-label="Select primary category">
+              <button type="button" class="role-btn active" role="radio" aria-checked="true" onclick="selectRole(this, 'For Myself')">
                 <span class="role-dot" aria-hidden="true"></span>
                 For Myself
               </button>
-              <button type="button" class="role-btn" role="radio" aria-checked="false" onclick="selectRole(this, 'Family Caregiver')">
+              <button type="button" class="role-btn" role="radio" aria-checked="false" onclick="selectRole(this, 'For a Family Member')">
                 <span class="role-dot" aria-hidden="true"></span>
-                For My Family
+                For a Family Member
               </button>
-              <button type="button" class="role-btn" role="radio" aria-checked="false" onclick="selectRole(this, 'Senior Living Director')">
+              <button type="button" class="role-btn" role="radio" aria-checked="false" onclick="selectRole(this, 'For an Organization')">
                 <span class="role-dot" aria-hidden="true"></span>
-                For My Organization
+                For an Organization
               </button>
             </div>
 
-            <!-- First Name & Last Name Input Fields -->
             <div class="name-row">
               <div>
                 <label for="user-first-name" class="email-label">First Name</label>
-                <input type="text" name="first_name" id="user-first-name" class="email-input" autocomplete="given-name" placeholder="e.g. Mary" required style="margin-bottom: 0;" />
+                <input type="text" name="first_name" id="user-first-name" class="email-input" autocomplete="given-name" placeholder="First Name" required style="margin-bottom: 0;" />
               </div>
               <div>
                 <label for="user-last-name" class="email-label">Last Name</label>
-                <input type="text" name="last_name" id="user-last-name" class="email-input" autocomplete="family-name" placeholder="e.g. Smith" required style="margin-bottom: 0;" />
+                <input type="text" name="last_name" id="user-last-name" class="email-input" autocomplete="family-name" placeholder="Last Name" required style="margin-bottom: 0;" />
               </div>
             </div>
 
-            <!-- Email Address Input Field -->
-            <label for="user-email" class="email-label" style="margin-top: 16px;">Email Address</label>
-            <input type="email" name="email" id="user-email" class="email-input" autocomplete="email" placeholder="e.g. mary.smith@example.com" required />
+            <label for="user-email" class="email-label" style="margin-top: 14px;">Email Address</label>
+            <input type="email" name="email" id="user-email" class="email-input" autocomplete="email" placeholder="name@example.com" required />
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
-              Join the Interest List
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.05rem;">
+              Submit Interest
             </button>
           </form>
         </div>
 
-        <!-- Success Message -->
-        <div id="waitlist-success" style="display: none; padding-top: 20px;" aria-live="polite">
-          <div style="font-size: 2.5rem; margin-bottom: 10px;" aria-hidden="true">🎉</div>
-          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: var(--safe-green); font-weight: 800;">You're on the list!</h3>
-          <p style="color: var(--text-muted); margin-top: 6px; font-size: 1rem;">We've saved your spot. Share your invite link below:</p>
-          <div style="background: var(--surface); padding: 12px; border-radius: 12px; margin-top: 14px; font-family: monospace; font-size: 0.95rem; color: var(--accent-light); word-break: break-all; border: 2px solid var(--surface-border);">
-            https://fortify.app/join?ref=FORTIFY-8921
-          </div>
+        <!-- SECTION 9: REPLACED CONFIRMATION (REMOVED REFERRAL FUNNEL) -->
+        <div id="waitlist-success" style="display: none; padding-top: 24px;" aria-live="polite">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;" aria-hidden="true">✉️️</div>
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--safe-green); font-weight: 800;">Interest Recorded</h3>
+          <p style="color: var(--text-muted); margin-top: 8px; font-size: 1rem; line-height: 1.6;">
+            Thank you. Your interest has been recorded and we will contact you with future updates.
+          </p>
         </div>
+      </div>
+    </section>
 
+    <!-- SECTION 5 & 12: CONTACT INFORMATION & GITHUB TRANSPARENCY -->
+    <section class="section-padding" id="contact" aria-labelledby="contact-heading" style="border-top: 2px solid var(--surface-border);">
+      <div class="section-title">
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--accent); letter-spacing: 0.1em;">GET IN TOUCH</span>
+        <h2 id="contact-heading">Contact &amp; Project Inquiry</h2>
+        <p>For research inquiries, feedback, or organizational collaborations, please reach out through our official channels.</p>
+      </div>
+
+      <div class="contact-grid">
+        <a href="mailto:projectelderconnect@gmail.com" class="contact-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div>
+            <strong style="display: block; font-size: 1rem;">Project Email</strong>
+            <span style="font-size: 0.88rem; color: var(--text-muted);">projectelderconnect@gmail.com</span>
+          </div>
+        </a>
+
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="contact-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <div>
+            <strong style="display: block; font-size: 1rem;">Project Code Repository</strong>
+            <span style="font-size: 0.88rem; color: var(--text-muted);">GitHub Repository</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- SECTION 12: GITHUB TRANSPARENCY BLOCK -->
+      <div class="github-box">
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 800;">Development Transparency</h3>
+        <p style="color: var(--text-muted); font-size: 0.98rem; margin-top: 8px; line-height: 1.6;">
+          Fortify is being actively developed and improved. Researchers and developers can follow our development progress in our public repository.
+        </p>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="margin-top: 16px; font-size: 0.9rem; padding: 10px 20px;">
+          View Repository on GitHub [PLACEHOLDER]
+        </a>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer style="text-align: center; padding: 32px 16px 100px 16px; border-top: 2px solid var(--surface-border); font-size: 0.95rem; color: var(--text-muted);">
-    <p>Fortify by ElderConnect © 2026. All rights reserved.</p>
+  <!-- SECTION 11: FOOTER WITH PRIVACY, TERMS, & CONTACT -->
+  <footer style="text-align: center; padding: 40px 16px 110px 16px; border-top: 2px solid var(--surface-border); font-size: 0.95rem; color: var(--text-muted);">
+    <p>Fortify by ElderConnect © 2026. Ongoing Research &amp; Development Effort.</p>
+
+    <div style="display: flex; justify-content: center; gap: 24px; margin-top: 16px; font-size: 0.9rem;">
+      <a href="privacy.html" style="color: var(--text-muted); text-decoration: underline;">Privacy Policy</a>
+      <a href="terms.html" style="color: var(--text-muted); text-decoration: underline;">Terms of Use</a>
+      <a href="#contact" style="color: var(--text-muted); text-decoration: underline;">Contact</a>
+    </div>
   </footer>
 
   <!-- Senior Accessibility Control Bar -->
@@ -1099,15 +1468,12 @@
   </div>
 
   <script>
-    // Helper to announce changes to Screen Readers
     function announce(message) {
       const el = document.getElementById('sr-announcer');
-      if (el) {
-        el.textContent = message;
-      }
+      if (el) { el.textContent = message; }
     }
 
-    // Scroll Observer for Storytelling
+    /* Scroll Observer for Storytelling */
     const scrollSection = document.getElementById('how-it-works');
     const screens = [
       document.getElementById('screen-1'),
@@ -1150,7 +1516,6 @@
       }
     });
 
-    // Keyboard support for clickable elements
     function handleKeyClick(event) {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -1158,7 +1523,7 @@
       }
     }
 
-    // Live Demo Selector
+    /* Live Demo Handler */
     function setDemo(score, label, color, desc, btnElement) {
       document.querySelectorAll('.demo-sample-card').forEach(card => {
         card.classList.remove('active');
@@ -1189,8 +1554,8 @@
       announce(`Selected sample. Verdict: ${score}% ${label}. ${desc}`);
     }
 
-    // Role & Waitlist Selector
-    let selectedRole = 'Senior';
+    /* Role Selector */
+    let selectedRole = 'For Myself';
     function selectRole(element, role) {
       document.querySelectorAll('.role-btn').forEach(b => {
         b.classList.remove('active');
@@ -1203,10 +1568,10 @@
       const hiddenRole = document.getElementById('hidden-role-input');
       if (hiddenRole) hiddenRole.value = role;
 
-      announce(`Selected role: ${role}`);
+      announce(`Selected role category: ${role}`);
     }
 
-    // AJAX Form Handler for Netlify
+    /* Netlify Form AJAX Submission */
     function handleNetlifySubmit(event) {
       event.preventDefault();
       const form = event.target;
@@ -1246,23 +1611,23 @@
         if (formContainer) formContainer.style.display = 'none';
         if (successBox) successBox.style.display = 'block';
 
-        announce('Thank you! You have been added to the Fortify Interest List.');
+        announce('Thank you. Your interest has been recorded.');
       })
       .catch((error) => {
         alert("Form submission failed: " + error);
       });
     }
 
-    // Accessibility Controls
+    /* Senior Accessibility Tools */
     let currentFontSize = 18;
     function adjustFont(delta) {
       currentFontSize = Math.max(16, Math.min(26, currentFontSize + delta));
       document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
-      announce(`Text size set to ${currentFontSize} pixels`);
+      announce(`Base font size adjusted to ${currentFontSize} pixels`);
     }
 
     function toggleContrast() {
-      document.body.classList.remove('light-theme');
+      document.body.classList.remove('dark-theme');
       document.body.classList.toggle('high-contrast');
       const isHc = document.body.classList.contains('high-contrast');
       announce(isHc ? 'High contrast mode enabled' : 'High contrast mode disabled');
@@ -1270,9 +1635,9 @@
 
     function toggleTheme() {
       document.body.classList.remove('high-contrast');
-      document.body.classList.toggle('light-theme');
-      const isLight = document.body.classList.contains('light-theme');
-      announce(isLight ? 'Light theme enabled' : 'Dark theme enabled');
+      document.body.classList.toggle('dark-theme');
+      const isDark = document.body.classList.contains('dark-theme');
+      announce(isDark ? 'Dark theme enabled' : 'Light theme enabled');
     }
   </script>
 </body>
